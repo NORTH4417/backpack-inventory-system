@@ -1,5 +1,5 @@
 ---
 triple:          'arm64-apple-darwin'
-binary-path:     '/Users/aaronsiven/Documents/Code/backpack-inventory-system/main'
+binary-path:     '/Users/gus/Desktop/vscodecclass/backpack-inventory-system/main'
 relocations:     []
 ...

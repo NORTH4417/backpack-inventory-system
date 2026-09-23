@@ -6,8 +6,12 @@
 char itemNames[NUM_ITEMS][30] = {
     "Pencil", "Pen", "Notebook", "Calculator", "Eraser"
 };
+// creates the indexes of each item type 
 int itemMaxCap[NUM_ITEMS] = {10, 10, 3, 1, 5};
+// these are the max amount of items you can put for each type 
 int itemCounts[NUM_ITEMS] = {0, 0, 0, 0, 0};
+// these are the default number of items in the backpack, since the backpack is empty this is going to start at zero 
+
 
 // Adds amount of the item at index to the backpack.
 // Returns 1 on success and 0 if it goes over the max or is invalid. This is for
@@ -17,10 +21,14 @@ int addItem(int index, int amount) {
         printf("Invalid item selection.\n");
         return 0;
     }
+    // this basically checks if the index is within the bounds that are given in NUM_ITEMS
+
     if (amount <= 0) {
         printf("Amount must be positive.\n");
         return 0;
     }
+    // when adding an item, this makes sure the number of items you are adding are positive 
+
     if (itemCounts[index] + amount > itemMaxCap[index]) {
         printf(
             "Cannot add %d to %s(s), only room for %d more.\n",
@@ -30,8 +38,12 @@ int addItem(int index, int amount) {
         );
         return 0;
     }
+    // if you are trying to put too much of a certain item in the backpack the program prints out a statement
+    // that tells how much of that item you can add to the backpack
 
     itemCounts[index] += amount;
+    // adds the amount of items you want to put into your backpack 
+
     printf(
         "Added %d to %s(s). Now have %d/%d.\n",
         amount,
@@ -40,6 +52,7 @@ int addItem(int index, int amount) {
         itemMaxCap[index]
     );
     return 1;
+    // 
 }
 
 // Removes amount of the item at index to the backpack.
