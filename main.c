@@ -81,6 +81,7 @@ int viewInventory(void) {
     for (int i = 0; i < NUM_ITEMS; i++) {
         printf("%ss: %d/%d\n", itemNames[i], itemCounts[i], itemMaxCap[i]);
     }
+    return 0;
 }
 
 // Quick demo
