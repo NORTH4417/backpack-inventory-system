@@ -138,9 +138,7 @@ int userBackpackInput(void) {
 
     // asks the user to add or remove an item from their backpack or if they
     // want to do neither
-    printf(
-        "Would you like to add or remove an item from your backpack?(1/2/3):\n"
-    );
+    printf("Enter 1 to add an item, 2 to remove an item, or 3 to quit:\n");
     scanf(" %d", &userChoice);
 
     // here we process the user's choice and run the program accordingly
@@ -148,8 +146,16 @@ int userBackpackInput(void) {
     if (userChoice == 1 || userChoice == 2) {
         // asks the user for an index and amount as this is required for the
         // arguments in both add and remove
-        printf("Please enter a index and amount please:");
-        scanf(" %d %d", &userIndex, &userAmount);
+
+        printf("Which item?\n");
+        printf("[0]: Pencils\n");
+        printf("[1]: Pens\n");
+        printf("[2]: Notebooks\n");
+        printf("[3]: Calculator\n");
+        printf("[4]: Erasers\n");
+        scanf(" %d", &userIndex);
+        printf("How many?\n");
+        scanf("%d", &userAmount);
 
         // here we add to the backpack
         if (userChoice == 1) {
@@ -190,9 +196,8 @@ int main(void) {
 
     while (loopConditional == 1) {
         loopConditional = userBackpackInput();
+        viewInventory();
     }
-
-    viewInventory();
 
     return 0;
 }
