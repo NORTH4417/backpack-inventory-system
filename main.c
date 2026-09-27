@@ -132,22 +132,23 @@ int viewInventory(void) {
 int userBackpackInput(void) {
     int userIndex;
     int userAmount;
-    int userChoice;
+    char userChoice = ' '; // initialize as a character to account for invalid
+                           // user inputs (ex: 'a' instead of '1')
     int returnedNumber;
     int loopDestroyer = 1;
 
     // asks the user to add or remove an item from their backpack or if they
     // want to do neither
     printf("Enter 1 to add an item, 2 to remove an item, or 3 to quit:\n");
-    scanf(" %d", &userChoice);
+    scanf(" %c", &userChoice);
 
     // here we process the user's choice and run the program accordingly
 
-    if (userChoice == 1 || userChoice == 2) {
+    if (userChoice == '1' || userChoice == '2') {
         // asks the user for an index and amount as this is required for the
         // arguments in both add and remove
 
-        printf("Which item?\n");
+        printf("Which item? (Enter number on left and hit enter):\n");
         printf("[0]: Pencils\n");
         printf("[1]: Pens\n");
         printf("[2]: Notebooks\n");
@@ -158,7 +159,7 @@ int userBackpackInput(void) {
         scanf("%d", &userAmount);
 
         // here we add to the backpack
-        if (userChoice == 1) {
+        if (userChoice == '1') {
             returnedNumber = addItem(userIndex, userAmount);
             // here we get the number that is returned from the function while
             // also running the function
@@ -174,7 +175,7 @@ int userBackpackInput(void) {
         // default return value is given but if everything goes according to
         // plan this will never be used
         return 0;
-    } else if (userChoice == 3) /* here the user is effectively going to break
+    } else if (userChoice == '3') /* here the user is effectively going to break
                                    out of the loop that we are going to build
                                    later and stop the program */
     {
@@ -182,20 +183,24 @@ int userBackpackInput(void) {
 
         return 0;
     } else {
-        // going to use this as a safeguard against malicious use
-        printf("Enter either 1, 2, or 3 please!\n");
-        return 2;
+        // validates user input, if they enter anything other than 1, 2, or 3
+        // returns 1 to main and starts over
+        printf("Invalid input, please try again.\n");
+        return 1;
     }
 
-    return 0;
+    return 0; // if user enters 3, returns 0 and breaks out of while loop in
+              // main
 }
-// Quick demo
+
 int main(void) {
 
-    int loopConditional = 1;
+    int loopConditional = 1; // initialize conditional variable
 
     while (loopConditional == 1) {
-        loopConditional = userBackpackInput();
+        loopConditional =
+            userBackpackInput(); // while userBackpack input function returns 1,
+                                 // loop will continue
         viewInventory();
     }
 
