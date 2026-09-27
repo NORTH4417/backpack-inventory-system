@@ -95,7 +95,7 @@ int removeItem(int index, int amount) {
     return 1;
 }
 
-// function to view current inventory
+// function to view backpack and its contents
 int viewInventory(void) {
     printf("                     _____________\n");
     printf("                   .'  _________  '.\n");
@@ -125,6 +125,7 @@ int viewInventory(void) {
     printf("           |                               |\n");
     printf("           |_______________________________|\n");
     printf("            \\_____________________________/\n");
+    printf("\n\n");
 
     return 0;
 }
@@ -196,6 +197,15 @@ int userBackpackInput(void) {
 int main(void) {
 
     int loopConditional = 1; // initialize conditional variable
+
+    printf("Hello! You can see your empty backpack below.\n");
+    printf(
+        "Follow the instructions to add or remove items and get ready for the "
+        "day!\n\n"
+    );
+
+    viewInventory(); // shows user empty backpack before getting started
+    printf("\n");
 
     while (loopConditional == 1) {
         loopConditional =
