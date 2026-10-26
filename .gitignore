@@ -1,0 +1,6 @@
+# Folders to ignore
+main.dSYM/
+.vscode/
+
+# Files to ignore
+main.exe
