@@ -3,5 +3,5 @@ main.dSYM/
 .vscode/
 
 # Files to ignore
-main.exe
+main
 a.out
