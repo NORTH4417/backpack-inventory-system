@@ -1,18 +1,16 @@
+#include "structs.h"
 #include <stdio.h>
 
-#define NUM_ITEMS 5 // Number of distinct items the backpack can hold
-
-// Uses the arrays with index i being the same across all 3
-char itemNames[NUM_ITEMS][30] = {
-    "Pencil", "Pen", "Notebook", "Calculator", "Eraser"
+// Items to be included in the backpack
+// NUM_ITEMS and array structure comes from structs.h
+// order of items does matter, it's the order that the user enters them in
+Item item[NUM_ITEMS] = {
+    {"Pencils", 10, 0},
+    {"Pens", 10, 0},
+    {"Notebooks", 3, 0},
+    {"Calculator", 1, 0},
+    {"Erasers", 5, 0},
 };
-
-// creates the indexes of each item type
-int itemMaxCap[NUM_ITEMS] = {10, 10, 3, 1, 5};
-// these are the max amount of items you can put for each type
-int itemCounts[NUM_ITEMS] = {0, 0, 0, 0, 0};
-// these are the default number of items in the backpack, since the backpack is
-// empty this is going to start at zero
 
 // Adds amount of the item at index to the backpack.
 // Returns 1 on success and 0 if it goes over the max or is invalid. This is for
@@ -32,12 +30,12 @@ int addItem(int index, int amount) {
     // when adding an item, this makes sure the number of items you are adding
     // are positive
 
-    if (itemCounts[index] + amount > itemMaxCap[index]) {
+    if (item[index].count + amount > item[index].maxCap) {
         printf(
             "Cannot add %d to %s(s), only room for %d more.\n",
             amount,
-            itemNames[index],
-            itemMaxCap[index] - itemCounts[index]
+            item[index].name,
+            item[index].maxCap - item[index].count
         );
         return 1;
     }
@@ -45,15 +43,15 @@ int addItem(int index, int amount) {
     // program prints out a statement that tells how much of that item you can
     // add to the backpack
 
-    itemCounts[index] += amount;
+    item[index].count += amount;
     // adds the amount of items you want to put into your backpack
 
     printf(
         "Added %d to %s(s). Now have %d/%d.\n",
         amount,
-        itemNames[index],
-        itemCounts[index],
-        itemMaxCap[index]
+        item[index].name,
+        item[index].count,
+        item[index].maxCap
     );
     return 1;
     // gotta figure out what to do with this 1, gonna use it as a pseudo boolean
@@ -74,23 +72,23 @@ int removeItem(int index, int amount) {
         return 1;
     }
 
-    if (itemCounts[index] - amount < 0) {
+    if (item[index].count - amount < 0) {
         printf(
             "Cannot remove %d %s(s), only have %d.\n",
             amount,
-            itemNames[index],
-            itemCounts[index]
+            item[index].name,
+            item[index].count
         );
         return 1;
     }
 
-    itemCounts[index] -= amount;
+    item[index].count -= amount;
     printf(
         "Removed %d %s(s). Now have %d/%d.\n",
         amount,
-        itemNames[index],
-        itemCounts[index],
-        itemMaxCap[index]
+        item[index].name,
+        item[index].count,
+        item[index].maxCap
     );
     return 1;
 }
@@ -106,9 +104,9 @@ int viewInventory(void) {
     printf("             /                           \\\n");
     printf("            /    _____________________    \\\n");
     printf("           |    |  ___________________|    |\n");
-    printf("           |    | | Notebooks:  %d/3   |    |\n", itemCounts[2]);
-    printf("           |    | | Calculator: %d/1   |    |\n", itemCounts[3]);
-    printf("        .--|    | | Erasers:    %d/5   |    |--.\n", itemCounts[4]);
+    printf("           |    | | Notebooks:  %d/3   |    |\n", item[2].count);
+    printf("           |    | | Calculator: %d/1   |    |\n", item[3].count);
+    printf("        .--|    | | Erasers:    %d/5   |    |--.\n", item[4].count);
     printf("        |  |    | |      _______      |    |  |\n");
     printf("        |  |    | |     |       |     |    |  |\n");
     printf("        |  |    | |     |   o   |     |    |  |\n");
@@ -118,8 +116,8 @@ int viewInventory(void) {
     printf("        |  |    |_______________________   |  |\n");
     printf("        |  |   /                        \\  |  |\n");
     printf("        |  |  |   ====================   | |  |\n");
-    printf("        |  |  |  | Pencils:    %d/10   |  | |  |\n", itemCounts[0]);
-    printf("        |  |  |  | Pens:       %d/10   |  | |  |\n", itemCounts[1]);
+    printf("        |  |  |  | Pencils:    %d/10   |  | |  |\n", item[0].count);
+    printf("        |  |  |  | Pens:       %d/10   |  | |  |\n", item[1].count);
     printf("        |  |  |  |____________________|  | |  |\n");
     printf("        '--|   \\________________________/  |--'\n");
     printf("           |                               |\n");
