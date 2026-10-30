@@ -93,6 +93,13 @@ int removeItem(int index, int amount) {
     return 1;
 }
 
+int emptyBackpack(void){
+    for(int i = 0; i < NUM_ITEMS; i++)
+    {
+        item[i].count = 0; 
+    }
+    return 0;
+}
 // function to view backpack and its contents
 int viewInventory(void) {
     printf("                     _____________\n");
@@ -153,7 +160,11 @@ int userBackpackInput(void) {
         printf("[2]: Notebooks\n");
         printf("[3]: Calculator\n");
         printf("[4]: Erasers\n");
+        printf("[5]: Go Back");
         scanf(" %d", &userIndex);
+        if(userIndex == 5){
+            return 1;
+        }
         printf("How many?\n");
         scanf("%d", &userAmount);
 
@@ -195,7 +206,7 @@ int userBackpackInput(void) {
 int main(void) {
 
     int loopConditional = 1; // initialize conditional variable
-
+    char emptyingTheBackpack;
     printf("Hello! You can see your empty backpack below.\n");
     printf(
         "Follow the instructions to add or remove items and get ready for the "
@@ -210,6 +221,18 @@ int main(void) {
             userBackpackInput(); // while userBackpack input function returns 1,
                                  // loop will continue
         viewInventory();
+        printf("Would you like to empty your backpack?(y/n):\n");
+        scanf(" %c", &emptyingTheBackpack);
+        if (emptyingTheBackpack == 'y')
+        {
+            emptyBackpack();
+            viewInventory();
+        }
+        else {
+            continue;
+        }
+        
+
     }
 
     return 0;
