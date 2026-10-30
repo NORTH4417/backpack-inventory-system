@@ -1,5 +1,10 @@
 #include "structs.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+//https://youtu.be/_wWfHRbzdX4?si=UhH2N2dN34yowL2S
+//Used this video to get the formula for random numbers within a certain range and for how to use srand()
+
 
 // Items to be included in the backpack
 // NUM_ITEMS and array structure comes from structs.h
@@ -100,6 +105,16 @@ int emptyBackpack(void){
     }
     return 0;
 }
+
+int randomBackpackForTheDay(void){
+    item[0].count = (rand() % (10 + 1));
+    item[1].count = (rand() % (10 + 1));
+    item[2].count = (rand() % (3 + 1));
+    item[3].count = (rand() % (1 + 1));
+    item[4].count = (rand() % (5 + 1));
+    return 0; 
+}
+
 // function to view backpack and its contents
 int viewInventory(void) {
     printf("                     _____________\n");
@@ -135,7 +150,7 @@ int viewInventory(void) {
     return 0;
 }
 
-int userBackpackInput(void) {
+int userBackpackInput() {
     int userIndex;
     int userAmount;
     char userChoice = ' '; // initialize as a character to account for invalid
@@ -190,7 +205,6 @@ int userBackpackInput(void) {
                                    later and stop the program */
     {
         printf("This is your backpack for the school day!!\n");
-
         return 0;
     } else {
         // validates user input, if they enter anything other than 1, 2, or 3
@@ -204,9 +218,11 @@ int userBackpackInput(void) {
 }
 
 int main(void) {
-
-    int loopConditional = 1; // initialize conditional variable
-    char emptyingTheBackpack;
+    srand(time(NULL));
+    char userChoice;
+    int loopConditional = 1; // initialize conditional variable 
+    char userInputEmptyingBackpack;
+    char randomBackpack; 
     printf("Hello! You can see your empty backpack below.\n");
     printf(
         "Follow the instructions to add or remove items and get ready for the "
@@ -216,24 +232,44 @@ int main(void) {
     viewInventory(); // shows user empty backpack before getting started
     printf("\n");
 
-    while (loopConditional == 1) {
-        loopConditional =
-            userBackpackInput(); // while userBackpack input function returns 1,
-                                 // loop will continue
+    printf("Are you in a rush this morning?(throw random items in backpack and leave)[y/n]\n");
+    scanf(" %c", &userChoice);
+
+    if(userChoice == 'y'){
+        randomBackpackForTheDay();
         viewInventory();
-        printf("Would you like to empty your backpack?(y/n):\n");
-        scanf(" %c", &emptyingTheBackpack);
-        if (emptyingTheBackpack == 'y')
-        {
-            emptyBackpack();
-            viewInventory();
-        }
-        else {
-            continue;
-        }
-        
-
     }
+    else if(userChoice == 'n') {
+        printf("Your backpack is kind of messy and still has some items in it from yesterday\n");
+        randomBackpackForTheDay();
+        viewInventory();
+        while(1){
+            loopConditional = userBackpackInput();
+            if (loopConditional == 1){
+                continue;
+            }
+            else {
+                printf("Would you like to clear your backpack and start over?[y/n]");
+                scanf(" %c", &userInputEmptyingBackpack);
 
+                if(userInputEmptyingBackpack == 'y'){
+                    emptyBackpack();
+                    viewInventory();
+                    continue;
+                }
+                else if (userInputEmptyingBackpack == 'n'){
+                    viewInventory();
+                    break;
+                }
+                else {
+                    printf("Enter a valid input please!");
+                }
+            }
+
+        }
+    }
+    
     return 0;
 }
+
+
