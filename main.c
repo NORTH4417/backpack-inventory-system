@@ -1,228 +1,38 @@
-#include "structs.h"
+/**
+ * @file main.c
+ * @author Aaron, Nathan, Gus
+ * @brief Entry point for the backpack inventory program. For compilation, in
+ * the terminal do "make", and then do "./backpack" to run.
+ * @version 0.1
+ * @date 2026-11-01
+ *
+ * @copyright Copyright (c) 2026
+ *
+ */
+
+#include "backpack.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//https://youtu.be/_wWfHRbzdX4?si=UhH2N2dN34yowL2S
-//Used this video to get the formula for random numbers within a certain range and for how to use srand()
+// https://youtu.be/_wWfHRbzdX4?si=UhH2N2dN34yowL2S
+// Used this video to get the formula for random numbers within a certain range
+// and for how to use srand()
 
-
-// Items to be included in the backpack
-// NUM_ITEMS and array structure comes from structs.h
-// order of items does matter, it's the order that the user enters them in
-Item item[NUM_ITEMS] = {
-    {"Pencils", 10, 0},
-    {"Pens", 10, 0},
-    {"Notebooks", 3, 0},
-    {"Calculator", 1, 0},
-    {"Erasers", 5, 0},
-};
-
-// Adds amount of the item at index to the backpack.
-// Returns 1 on success and 0 if it goes over the max or is invalid. This is for
-// boolean purposes.
-int addItem(int index, int amount) {
-    if (index < 0 || index >= NUM_ITEMS) {
-        printf("Invalid item selection.\n");
-        return 1;
-    }
-    // this basically checks if the index is within the bounds that are given in
-    // NUM_ITEMS
-
-    if (amount <= 0) {
-        printf("Amount must be positive.\n");
-        return 1;
-    }
-    // when adding an item, this makes sure the number of items you are adding
-    // are positive
-
-    if (item[index].count + amount > item[index].maxCap) {
-        printf(
-            "Cannot add %d to %s(s), only room for %d more.\n",
-            amount,
-            item[index].name,
-            item[index].maxCap - item[index].count
-        );
-        return 1;
-    }
-    // if you are trying to put too much of a certain item in the backpack the
-    // program prints out a statement that tells how much of that item you can
-    // add to the backpack
-
-    item[index].count += amount;
-    // adds the amount of items you want to put into your backpack
-
-    printf(
-        "Added %d to %s(s). Now have %d/%d.\n",
-        amount,
-        item[index].name,
-        item[index].count,
-        item[index].maxCap
-    );
-    return 1;
-    // gotta figure out what to do with this 1, gonna use it as a pseudo boolean
-    // value
-}
-
-// Removes amount of the item at index to the backpack.
-// Returns 1 on success and 0 if it goes under the 0 or is invalid. This is for
-// boolean purposes.
-int removeItem(int index, int amount) {
-    if (index < 0 || index >= NUM_ITEMS) {
-        printf("Invalid item selection.\n");
-        return 1;
-    }
-
-    if (amount <= 0) {
-        printf("Amount must be positive.\n");
-        return 1;
-    }
-
-    if (item[index].count - amount < 0) {
-        printf(
-            "Cannot remove %d %s(s), only have %d.\n",
-            amount,
-            item[index].name,
-            item[index].count
-        );
-        return 1;
-    }
-
-    item[index].count -= amount;
-    printf(
-        "Removed %d %s(s). Now have %d/%d.\n",
-        amount,
-        item[index].name,
-        item[index].count,
-        item[index].maxCap
-    );
-    return 1;
-}
-
-int emptyBackpack(void){
-    for(int i = 0; i < NUM_ITEMS; i++)
-    {
-        item[i].count = 0; 
-    }
-    return 0;
-}
-
-int randomBackpackForTheDay(void){
-    item[0].count = (rand() % (10 + 1));
-    item[1].count = (rand() % (10 + 1));
-    item[2].count = (rand() % (3 + 1));
-    item[3].count = (rand() % (1 + 1));
-    item[4].count = (rand() % (5 + 1));
-    return 0; 
-}
-
-// function to view backpack and its contents
-int viewInventory(void) {
-    printf("                     _____________\n");
-    printf("                   .'  _________  '.\n");
-    printf("                  /  .'         '.  \\\n");
-    printf("                 |  |             |  |\n");
-    printf("                 |  |             |  |\n");
-    printf("              ___|__|_____________|__|___\n");
-    printf("             /                           \\\n");
-    printf("            /    _____________________    \\\n");
-    printf("           |    |  ___________________|    |\n");
-    printf("           |    | | Notebooks:  %d/3   |    |\n", item[2].count);
-    printf("           |    | | Calculator: %d/1   |    |\n", item[3].count);
-    printf("        .--|    | | Erasers:    %d/5   |    |--.\n", item[4].count);
-    printf("        |  |    | |      _______      |    |  |\n");
-    printf("        |  |    | |     |       |     |    |  |\n");
-    printf("        |  |    | |     |   o   |     |    |  |\n");
-    printf("        |  |    | |     |_______|     |    |  |\n");
-    printf("        |  |    | |                   |    |  |\n");
-    printf("        |  |    | |___________________|    |  |\n");
-    printf("        |  |    |_______________________   |  |\n");
-    printf("        |  |   /                        \\  |  |\n");
-    printf("        |  |  |   ====================   | |  |\n");
-    printf("        |  |  |  | Pencils:    %d/10   |  | |  |\n", item[0].count);
-    printf("        |  |  |  | Pens:       %d/10   |  | |  |\n", item[1].count);
-    printf("        |  |  |  |____________________|  | |  |\n");
-    printf("        '--|   \\________________________/  |--'\n");
-    printf("           |                               |\n");
-    printf("           |_______________________________|\n");
-    printf("            \\_____________________________/\n");
-    printf("\n\n");
-
-    return 0;
-}
-
-int userBackpackInput() {
-    int userIndex;
-    int userAmount;
-    char userChoice = ' '; // initialize as a character to account for invalid
-                           // user inputs (ex: 'a' instead of '1')
-    int returnedNumber;
-    int loopDestroyer = 1;
-
-    // asks the user to add or remove an item from their backpack or if they
-    // want to do neither
-    printf("Enter 1 to add an item, 2 to remove an item, or 3 to quit:\n");
-    scanf(" %c", &userChoice);
-
-    // here we process the user's choice and run the program accordingly
-
-    if (userChoice == '1' || userChoice == '2') {
-        // asks the user for an index and amount as this is required for the
-        // arguments in both add and remove
-
-        printf("Which item? (Enter number on left and hit enter):\n");
-        printf("[0]: Pencils\n");
-        printf("[1]: Pens\n");
-        printf("[2]: Notebooks\n");
-        printf("[3]: Calculator\n");
-        printf("[4]: Erasers\n");
-        printf("[5]: Go Back");
-        scanf(" %d", &userIndex);
-        if(userIndex == 5){
-            return 1;
-        }
-        printf("How many?\n");
-        scanf("%d", &userAmount);
-
-        // here we add to the backpack
-        if (userChoice == '1') {
-            returnedNumber = addItem(userIndex, userAmount);
-            // here we get the number that is returned from the function while
-            // also running the function
-
-            return returnedNumber;
-        } else /* if the user doesn't enter 'a' it will automatically assume
-                  that the input is r which works off our prior conditional  */
-        {
-            returnedNumber = removeItem(userIndex, userAmount);
-            return returnedNumber;
-        }
-
-        // default return value is given but if everything goes according to
-        // plan this will never be used
-        return 0;
-    } else if (userChoice == '3') /* here the user is effectively going to break
-                                   out of the loop that we are going to build
-                                   later and stop the program */
-    {
-        printf("This is your backpack for the school day!!\n");
-        return 0;
-    } else {
-        // validates user input, if they enter anything other than 1, 2, or 3
-        // returns 1 to main and starts over
-        printf("Invalid input, please try again.\n");
-        return 1;
-    }
-
-    return 0; // if user enters 3, returns 0 and breaks out of while loop in
-              // main
-}
-
+/**
+ * @brief Runs the backpack program.
+ *
+ * Shows an empty backpack and then asks whether the user is in a rush. If so a
+ * random backpack is generated and shown. Otherwise it shows a random messy
+ * backpack is shown and the user can add or remove items until they quit.
+ *
+ * @return 0 on normal exit.
+ */
 int main(void) {
     srand(time(NULL));
     char userChoice;
-    int loopConditional = 1; // initialize conditional variable 
+    int loopConditional = 1; // initialize conditional variable
     char userInputEmptyingBackpack;
-    char randomBackpack; 
+    char randomBackpack;
     printf("Hello! You can see your empty backpack below.\n");
     printf(
         "Follow the instructions to add or remove items and get ready for the "
@@ -232,44 +42,45 @@ int main(void) {
     viewInventory(); // shows user empty backpack before getting started
     printf("\n");
 
-    printf("Are you in a rush this morning?(throw random items in backpack and leave)[y/n]\n");
+    printf(
+        "Are you in a rush this morning?(throw random items in backpack and "
+        "leave)[y/n]\n"
+    );
     scanf(" %c", &userChoice);
 
-    if(userChoice == 'y'){
+    if (userChoice == 'y') {
         randomBackpackForTheDay();
         viewInventory();
-    }
-    else if(userChoice == 'n') {
-        printf("Your backpack is kind of messy and still has some items in it from yesterday\n");
+    } else if (userChoice == 'n') {
+        printf(
+            "Your backpack is kind of messy and still has some items in it "
+            "from yesterday\n"
+        );
         randomBackpackForTheDay();
         viewInventory();
-        while(1){
+        while (1) {
             loopConditional = userBackpackInput();
-            if (loopConditional == 1){
+            if (loopConditional == 1) {
                 continue;
-            }
-            else {
-                printf("Would you like to clear your backpack and start over?[y/n]");
+            } else {
+                printf(
+                    "Would you like to clear your backpack and start over?[y/n]"
+                );
                 scanf(" %c", &userInputEmptyingBackpack);
 
-                if(userInputEmptyingBackpack == 'y'){
+                if (userInputEmptyingBackpack == 'y') {
                     emptyBackpack();
                     viewInventory();
                     continue;
-                }
-                else if (userInputEmptyingBackpack == 'n'){
+                } else if (userInputEmptyingBackpack == 'n') {
                     viewInventory();
                     break;
-                }
-                else {
+                } else {
                     printf("Enter a valid input please!");
                 }
             }
-
         }
     }
-    
+
     return 0;
 }
-
-
